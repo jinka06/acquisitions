@@ -24,7 +24,8 @@
   "homepage": "https://github.com/jinka06/acquisitions#readme",
   "dependencies": {
     "dotenv": "^17.4.0",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "sqlite": "^5.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

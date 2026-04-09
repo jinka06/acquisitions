@@ -1,6 +1,6 @@
 import { getDb } from '../config/db.js'
 
-async function createUsersTable() {
+export async function createUsersTable() {
     const db = await getDb()
     await db.exec(`CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,5 +14,3 @@ async function createUsersTable() {
     console.log('Table created successfully');
     await db.close();
 }
-
-createUsersTable()

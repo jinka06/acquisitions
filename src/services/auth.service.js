@@ -32,3 +32,18 @@ export const createUser = async ({ name, email, password, role = 'user' }) => {
         throw e;
     }
 }
+
+export const signIn = async ({ email, password }) => {
+    try {
+        const db = await getDb();
+        const user = await db.get('SELECT * FROM users WHERE email = ?', [email]);
+        if (!user) throw new Error('Invalid credentials');
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) throw new Error('Invalid credentials');
+        logger.info(`User ${user.email} signed in successfully.`);
+        return { id: user.id, name: user.name, email: user.email, role: user.role, created_at: user.created_at };
+    } catch (e) {
+        logger.error(`Error signing in: ${e}`);
+        throw e;
+    }
+}

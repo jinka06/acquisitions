@@ -6,10 +6,10 @@ export async function createUsersTable() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE,
       email TEXT NOT NULL UNIQUE,
-      password TEXT NOT NULL UNIQUE,
-      role TEXT NOT NULL UNIQUE,
-      created_at TEXT NOT NULL DEFAULT (datatime('now')),
-      updated_at TEXT NOT NULL DEFAULT (datatime('now'))
+      password TEXT NOT NULL,
+      role TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     )`)
     console.log('Table created successfully');
 }

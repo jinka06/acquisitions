@@ -13,11 +13,3 @@ export async function createUsersTable() {
     )`)
     console.log('Table created successfully');
 }
-
-export async function createUser({ name, email, password, role }) {
-  const db = await getDb();
-  return db.run(
-    `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`,
-    [name, email, password, role]
-  );
-}

@@ -1,4 +1,7 @@
-import logger from '../config/logger.js'
+import logger from '../config/logger.js';
+import { createUser } from '../services/auth.service.js';
+import { signupSchema } from '../validations/auth.validation.js';
+import { formatValidationError } from '../utils/format.js'
 
 export const signup = async (req, res, next) => {
     try{
@@ -11,19 +14,18 @@ export const signup = async (req, res, next) => {
         }
 
         const { name, email, role } = validationResult.data;
+        const newUser = await createUser(validationResult.data)
 
         // AUTH SERVICE
 
         logger.info(`User registered successfully: ${email}`)
         res.status(201).json({
             message: "User registered",
-            user: {
-                id: 1, name, email, role
-            }
+            user: newUser
         })
     } catch(e){
         logger.error('Signup error', e);
-        if(e.message === 'User with this email already exists'){
+        if(e.message === 'User already exists'){
             return res.status(409).json({ error: 'Email already exist'});
         }
 

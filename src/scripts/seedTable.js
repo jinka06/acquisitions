@@ -1,5 +1,6 @@
 import { getDb } from '../config/db.js';
-import { createUsersTable, createUser } from '../models/user.model.js';
+import { createUsersTable } from '../models/user.model.js';
+import { createUser } from '../services/auth.service.js';
 
 const users = [
   {

@@ -1,5 +1,5 @@
 import { getDb } from '../config/db.js';
-import { createUsersTable } from '../models/user.model.js';
+import { createUsersTable, createUser } from '../models/user.model.js';
 
 const users = [
   {
@@ -21,18 +21,16 @@ async function seedTable() {
   const db = await getDb();
   try {
     await db.exec('BEGIN TRANSACTION');
-    for (const { name, email, password, role } of users) {
-      await db.run(
-        `INSERT INTO users (name, email, password, role)
-         VALUES (?, ?, ?, ?)`,
-        [name, email, password, role]
-      );
+    for (const user of users) {
+      await createUser(user)
     }
     await db.exec('COMMIT');
     console.log('Users seeded successfully');
   } catch (error) {
     await db.exec('ROLLBACK');
     console.error('Error seeding users:', error.message);
+  } finally {
+    await db.close();
   }
 }
 

@@ -12,5 +12,12 @@ export async function createUsersTable() {
       updated_at TEXT NOT NULL DEFAULT (datatime('now'))
     )`)
     console.log('Table created successfully');
-    await db.close();
+}
+
+export async function createUser({ name, email, password, role }) {
+  const db = await getDb();
+  return db.run(
+    `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`,
+    [name, email, password, role]
+  );
 }

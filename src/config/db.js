@@ -1,19 +1,21 @@
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import pg from 'pg';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const { Pool } = pg;
 
-let db;
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
 export async function getDb() {
-  if (!db) {
-    db = await open({
-      filename: path.join(__dirname, 'database.db'),
-      driver: sqlite3.Database,
-    });
-    await db.run('PRAGMA foreign_keys = ON');
+  return pool;
+}
+
+export async function query(text, params) {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(text, params);
+    return result;
+  } finally {
+    client.release();
   }
-  return db;
 }

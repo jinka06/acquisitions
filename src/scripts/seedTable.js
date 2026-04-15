@@ -1,4 +1,3 @@
-import { getDb } from '../config/db.js';
 import { createUsersTable } from '../models/user.model.js';
 import { createUser } from '../services/auth.service.js';
 
@@ -6,33 +5,27 @@ const users = [
   {
     name: 'Alice',
     email: 'alice@example.com',
-    password: 'hashed_password_1',
+    password: 'password123',
     role: 'admin',
   },
   {
     name: 'Bob',
     email: 'bob@example.com',
-    password: 'hashed_password_2',
+    password: 'password123',
     role: 'user',
   },
 ];
 
 async function seedTable() {
   await createUsersTable();
-  const db = await getDb();
-  try {
-    await db.exec('BEGIN TRANSACTION');
-    for (const user of users) {
-      await createUser(user)
-    }
-    await db.exec('COMMIT');
-    console.log('Users seeded successfully');
-  } catch (error) {
-    await db.exec('ROLLBACK');
-    console.error('Error seeding users:', error.message);
-  } finally {
-    await db.close();
+  for (const user of users) {
+    await createUser(user);
   }
+  console.log('Users seeded successfully');
+  process.exit(0);
 }
 
-seedTable();
+seedTable().catch(e => {
+  console.error('Seeding failed:', e.message);
+  process.exit(1);
+});

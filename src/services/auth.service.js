@@ -2,18 +2,20 @@ import bcrypt from 'bcrypt';
 import logger from '../config/logger.js';
 import { query } from '../config/db.js';
 
-export const hashPassword = async (password) => {
+export const hashPassword = async password => {
   try {
     return await bcrypt.hash(password, 10);
   } catch (e) {
     logger.error(`Error hashing the password: ${e}`);
-    throw new Error('Error hashing');
+    throw new Error('Error hashing', { cause: e });
   }
 };
 
 export const createUser = async ({ name, email, password, role = 'user' }) => {
   try {
-    const existing = await query('SELECT id FROM users WHERE email = $1', [email]);
+    const existing = await query('SELECT id FROM users WHERE email = $1', [
+      email,
+    ]);
     if (existing.rows.length > 0) throw new Error('User already exists');
     const password_hash = await hashPassword(password);
     const result = await query(
@@ -39,7 +41,13 @@ export const signIn = async ({ email, password }) => {
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) throw new Error('Invalid credentials');
     logger.info(`User ${user.email} signed in successfully.`);
-    return { id: user.id, name: user.name, email: user.email, role: user.role, created_at: user.created_at };
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      created_at: user.created_at,
+    };
   } catch (e) {
     logger.error(`Error signing in: ${e}`);
     throw e;

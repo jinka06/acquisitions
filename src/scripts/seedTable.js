@@ -2,14 +2,18 @@ import { createUsersTable } from '../models/user.model.js';
 import { createUser } from '../services/auth.service.js';
 
 const users = [
-  { name: 'Alice',
+  {
+    name: 'Alice',
     email: 'alice@example.com',
     password: 'password123',
-    role: 'admin' },
-  { name: 'Bob',
+    role: 'admin',
+  },
+  {
+    name: 'Bob',
     email: 'bob@example.com',
     password: 'password123',
-    role: 'user' },
+    role: 'user',
+  },
 ];
 
 async function seedTable() {
@@ -21,7 +25,7 @@ async function seedTable() {
   process.exit(0);
 }
 
-seedTable().catch((e) => {
+seedTable().catch(e => {
   console.error('Seeding failed:', e.message);
   process.exit(1);
 });

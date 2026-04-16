@@ -5,7 +5,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import router from './routes/auth.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import usersRoutes from './routes/users.routes.js';
 import securityMiddleware from './middleware/security.middleware.js';
 
 const app = express();
@@ -41,6 +42,7 @@ app.get('/api', (req, res) => {
   res.status(200).json({ message: 'Acquisitions API is currently running!' });
 });
 
-app.use('/api/auth', router);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
 
 export default app;

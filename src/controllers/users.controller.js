@@ -1,5 +1,5 @@
 import logger from '../config/logger.js';
-import getAllUsers from '../services/users.service.js';
+import { getAllUsers } from '../services/users.service.js';
 
 export const fetchAllUsers = async (req, res, next) => {
   try {

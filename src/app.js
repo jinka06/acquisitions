@@ -1,5 +1,4 @@
 import express from 'express';
-import { createUsersTable } from './models/user.model.js';
 import logger from './config/logger.js';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -10,7 +9,6 @@ import usersRoutes from './routes/users.routes.js';
 import securityMiddleware from './middleware/security.middleware.js';
 
 const app = express();
-await createUsersTable();
 
 app.use(helmet());
 app.use(cors());
